@@ -9,9 +9,9 @@ class Popup extends React.Component {
     id: "",
     description: "",
     location: "",
-    availableDate: new Date(),
+    availableFromDate: new Date(),
     owner: "",
-    phone: "",
+    phoneNumber: "",
     property: { id: 1, name: "" },
   };
 
@@ -19,15 +19,12 @@ class Popup extends React.Component {
     super(props);
 
     this.state = {
-      date: new Date(),
-      isLoading: false,
       properties: [],
       records: [],
       item: this.emptyItem,
-      showPopup: false,
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.submitRecord = this.submitRecord.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
   }
@@ -53,7 +50,7 @@ class Popup extends React.Component {
 
   handleDateChange(dateChanged) {
     let item = { ...this.state.item };
-    item.availableDate = dateChanged;
+    item.availableFromDate = dateChanged;
     this.setState({ item });
     console.log(item);
   }
@@ -68,7 +65,7 @@ class Popup extends React.Component {
     console.log(item);
   }
 
-  async handleSubmit(event) {
+  async submitRecord(event) {
     const item = this.state.item;
 
     await fetch(`/api/records`, {
@@ -105,7 +102,7 @@ class Popup extends React.Component {
 
     return (
       <Container>
-        <Form onSubmit={this.handleSubmit} className="form">
+        <Form onSubmit={this.submitRecord} className="form">
           <FormGroup>
             <Label for="description">Description</Label>
             <Input
@@ -115,6 +112,7 @@ class Popup extends React.Component {
               style={{ width: "50%" }}
               onChange={this.handleChange}
               autoComplete="name"
+              required
             />
           </FormGroup>
           <FormGroup>
@@ -126,7 +124,7 @@ class Popup extends React.Component {
           <FormGroup>
             <Label for="date">Available from</Label>
             <Calendar
-              selected={this.state.item.availableDate}
+              selected={this.state.item.availableFromDate}
               style={{ width: "20px" }}
               onChange={this.handleDateChange}
             />
@@ -138,6 +136,7 @@ class Popup extends React.Component {
               name="location"
               id="location"
               onChange={this.handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
@@ -147,15 +146,17 @@ class Popup extends React.Component {
               name="owner"
               id="owner"
               onChange={this.handleChange}
+              required
             />
           </FormGroup>
           <FormGroup>
             <Label for="phone">Contact</Label>
             <Input
               type="text"
-              name="phone"
+              name="phoneNumber"
               id="phone"
               onChange={this.handleChange}
+              required
             />
           </FormGroup>
           <Button color="primary" type="submit">

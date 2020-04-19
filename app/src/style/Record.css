@@ -1,3 +1,7 @@
 .buttonAdd{
     margin-left: 10px;
 }
+
+.tableDiv{
+    overflow-x:auto;
+}

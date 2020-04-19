@@ -94,40 +94,40 @@ class Records extends Component {
     return (
       <div>
         <AppNav />
-        <Container>
-          <Table>
-            <thead>
-              <tr>
-                <th width="30%">Description</th>
-                <th width="10%">Location</th>
-                <th width="20%">Available from</th>
-                <th width="10%">Property</th>
-                <th width="10%">Owner</th>
-                <th width="10%">Contact</th>
-                <th width="10%">Action</th>
-              </tr>
-            </thead>
+        <Container className="container">
+          <div className="tableDiv">
+            <Table>
+              <thead>
+                <tr>
+                  <th width="30%">Description</th>
+                  <th width="10%">Location</th>
+                  <th width="20%">Available from</th>
+                  <th width="10%">Property</th>
+                  <th width="10%">Owner</th>
+                  <th width="10%">Contact</th>
+                  <th width="10%">Action</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {rows}
-              <Button
-                className="buttonAdd"
-                color="primary"
-                onClick={() => this.openModal()}
-              >
-                Add
-              </Button>
-              <Modal
-                visible={this.state.visible}
-                width="600"
-                height="500"
-                effect="fadeInUp"
-                onClickAway={() => this.closeModal()}
-              >
-                <Popup />
-              </Modal>
-            </tbody>
-          </Table>
+              <tbody>{rows}</tbody>
+            </Table>
+          </div>
+          <Button
+            className="buttonAdd"
+            color="primary"
+            onClick={() => this.openModal()}
+          >
+            Add
+          </Button>
+          <Modal
+            visible={this.state.visible}
+            width="600"
+            height="500"
+            effect="fadeInUp"
+            onClickAway={() => this.closeModal()}
+          >
+            <Popup />
+          </Modal>
         </Container>
       </div>
     );
