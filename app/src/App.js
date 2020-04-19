@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Route,BrowserRouter as Router, Switch} from 'react-router-dom'
-import Property from './components/Property';
 import Home from './components/Home';
 import Records from './components/Record'
 
