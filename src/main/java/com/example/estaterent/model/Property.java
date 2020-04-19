@@ -1,6 +1,7 @@
 package com.example.estaterent.model;
 
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
@@ -13,6 +14,7 @@ import javax.persistence.*;
 public class Property {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
