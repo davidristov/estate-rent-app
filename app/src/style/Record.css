@@ -1,7 +1,22 @@
 .buttonAdd{
     margin-left: 10px;
+    width: 100px;
 }
 
-.tableDiv{
-    overflow-x:auto;
+tbody + thead{
+    display: none;
 }
+
+.container{
+    margin-top:20px;
+}
+
+.table{
+    margin-top:30px;
+}
+
+/* .dataTables_filter {
+    width: 50%;
+    float: right;
+    text-align: right;
+ } */

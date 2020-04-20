@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import AppNav from "./AppNav";
-import { Table, Container, Button } from "reactstrap";
+import { Container, Button } from "reactstrap";
 import "../App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Moment from "react-moment";
 import "../style/Record.css";
 import Popup from "./Popup";
 import Modal from "react-awesome-modal";
+import { MDBDataTable } from "mdbreact";
 
 class Records extends Component {
   constructor(props) {
@@ -64,53 +65,82 @@ class Records extends Component {
   }
 
   render() {
-    const { records, isLoading } = this.state;
+    const {isLoading } = this.state;
 
     if (isLoading) return <div>Loading...</div>;
 
-    let rows = records.map((record) => (
-      <tr key={record.id}>
-        <td>{record.description}</td>
-        <td>{record.location}</td>
-        <td>
-          <Moment date={record.availableFromDate} format="DD/MM/YYYY"></Moment>
-        </td>
-        <td>{record.property.name}</td>
-        <td>{record.owner}</td>
-        <td>{record.phoneNumber}</td>
-        <td>
-          <Button
-            size="sm"
-            color="danger"
-            onClick={() => this.remove(record.id)}
-          >
-            Delete
-          </Button>
-        </td>
-      </tr>
-    ));
+    let data = {
+      columns: [
+        {
+          label: "Description",
+          field: "description",
+        },
+
+        {
+          label: "Location",
+          field: "location",
+        },
+
+        {
+          label: "Available from",
+          field: "avDate",
+        },
+
+        {
+          label: "Property",
+          field: "property",
+        },
+
+        {
+          label: "Owner",
+          field: "owner",
+        },
+
+        {
+          label: "Contact",
+          field: "contact",
+        },
+
+        {
+          label: "Action",
+          field: "action",
+        },
+
+        {
+          field: "add",
+        },
+      ],
+
+      rows: [
+        ...this.state.records.map((record) => ({
+          description: record.description,
+          location: record.location,
+          avDate: (
+            <Moment
+              date={record.availableFromDate}
+              format="DD/MM/YYYY"
+            ></Moment>
+          ),
+          property: record.property.name,
+          owner: record.owner,
+          contact: record.phoneNumber,
+          action: (
+            <Button
+              size="sm"
+              color="danger"
+              onClick={() => this.remove(record.id)}
+            >
+              Delete
+            </Button>
+          ),
+        })),
+      ],
+    };
 
     return (
       <div>
         <AppNav />
         <Container className="container">
-          <div className="tableDiv">
-            <Table>
-              <thead>
-                <tr>
-                  <th width="30%">Description</th>
-                  <th width="10%">Location</th>
-                  <th width="20%">Available from</th>
-                  <th width="10%">Property</th>
-                  <th width="10%">Owner</th>
-                  <th width="10%">Contact</th>
-                  <th width="10%">Action</th>
-                </tr>
-              </thead>
-
-              <tbody>{rows}</tbody>
-            </Table>
-          </div>
           <Button
             className="buttonAdd"
             color="primary"
@@ -121,12 +151,14 @@ class Records extends Component {
           <Modal
             visible={this.state.visible}
             width="600"
-            height="500"
+            height="530"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
             <Popup />
           </Modal>
+
+          <MDBDataTable className="table" responsive striped hover data={data} />
         </Container>
       </div>
     );
