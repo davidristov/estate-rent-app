@@ -13,6 +13,7 @@ class Popup extends React.Component {
     availableFromDate: new Date(),
     owner: "",
     phoneNumber: "",
+    price: "",
     property: { id: 1, name: "Apartman" },
   };
 
@@ -154,6 +155,16 @@ class Popup extends React.Component {
               type="text"
               name="location"
               id="location"
+              onChange={this.handleChange}
+              required
+            />
+          </FormGroup>
+          <FormGroup className="price">
+            <Label for="price">Price</Label>
+            <Input
+              type="text"
+              name="price"
+              id="price"
               onChange={this.handleChange}
               required
             />

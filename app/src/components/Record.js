@@ -21,7 +21,6 @@ class Records extends Component {
       isLoading: false,
       properties: [],
       records: [],
-      showPopup: false,
       visible: false,
     };
   }
@@ -51,12 +50,6 @@ class Records extends Component {
     });
   }
 
-  togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup,
-    });
-  }
-
   async componentDidMount() {
     const response = await fetch("/api/properties");
     const body = await response.json();
@@ -67,8 +60,12 @@ class Records extends Component {
     this.setState({ records: bodyRecord, isLoading: false });
   }
 
+  createDynamicURL(){
+    alert("DA")
+  }
+
   render() {
-    const {isLoading } = this.state;
+    const { isLoading } = this.state;
 
     if (isLoading) return <div>Loading...</div>;
 
@@ -77,7 +74,7 @@ class Records extends Component {
         {
           label: "Description",
           field: "description",
-          sort: 'asc'
+          sort: "asc",
         },
 
         {
@@ -96,6 +93,11 @@ class Records extends Component {
         },
 
         {
+          label: "Price",
+          field: "price",
+        },
+
+        {
           label: "Owner",
           field: "owner",
         },
@@ -108,15 +110,14 @@ class Records extends Component {
         {
           label: "Action",
           field: "action",
-          sort: "disabled"
+          sort: "disabled",
         },
-
       ],
 
       rows: [
         ...this.state.records.map((record) => ({
           description: record.description,
-          location: record.location,
+          location: <a href={`https://maps.google.com/?q=${record.location}`}>{record.location}</a>,
           avDate: (
             <Moment
               date={record.availableFromDate}
@@ -124,13 +125,14 @@ class Records extends Component {
             ></Moment>
           ),
           property: record.property.name,
+          price: record.price,
           owner: record.owner,
           contact: record.phoneNumber,
           action: (
             <Button
               size="sm"
               color="danger"
-              onClick={() => this.remove(record.id)}
+              onClick={() => {if(window.confirm('Are you sure you want to delete?')){this.remove(record.id)};}}
             >
               Delete
             </Button>
@@ -143,18 +145,17 @@ class Records extends Component {
       <div>
         <AppNav />
         <Container className="container">
-       
           <Modal
             visible={this.state.visible}
             width="600"
-            height="530"
+            height="630"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
             <Popup />
           </Modal>
 
-          <MDBDataTable className="table" responsive striped hover data={data} />
+          <MDBDataTable className="table" responsive data={data} />
           <Button
             className="buttonAdd"
             color="primary"
