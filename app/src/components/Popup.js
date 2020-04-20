@@ -3,6 +3,7 @@ import { Input, Container, Button, Label, FormGroup, Form } from "reactstrap";
 import "../App.css";
 import Calendar from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../style/Popup.css"
 
 class Popup extends React.Component {
   emptyItem = {
@@ -118,6 +119,7 @@ class Popup extends React.Component {
         {property.name}
       </option>
     ));
+    
 
     return (
       <Container>
@@ -128,7 +130,6 @@ class Popup extends React.Component {
               type="text"
               name="description"
               id="description"
-              style={{ width: "50%" }}
               onChange={this.handleChange}
               autoComplete="name"
               required
@@ -136,15 +137,14 @@ class Popup extends React.Component {
           </FormGroup>
           <FormGroup>
             <Label for="property">Property</Label>
-            <select name="property" onChange={this.handleProperty}>
+            <select name="property" className="property" onChange={this.handleProperty}>
               {propertiesList}
             </select>
           </FormGroup>
           <FormGroup>
             <Label for="date">Available from</Label>
-            <Calendar
+            <Calendar className="calendar"
               selected={this.state.item.availableFromDate}
-              style={{ width: "20px" }}
               onChange={this.handleDateChange}
             />
           </FormGroup>

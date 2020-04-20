@@ -8,6 +8,9 @@ import "../style/Record.css";
 import Popup from "./Popup";
 import Modal from "react-awesome-modal";
 import { MDBDataTable } from "mdbreact";
+import "mdbreact/dist/css/mdb.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "bootstrap-css-only/css/bootstrap.min.css";
 
 class Records extends Component {
   constructor(props) {
@@ -74,6 +77,7 @@ class Records extends Component {
         {
           label: "Description",
           field: "description",
+          sort: 'asc'
         },
 
         {
@@ -104,11 +108,9 @@ class Records extends Component {
         {
           label: "Action",
           field: "action",
+          sort: "disabled"
         },
 
-        {
-          field: "add",
-        },
       ],
 
       rows: [
@@ -141,7 +143,7 @@ class Records extends Component {
       <div>
         <AppNav />
         <Container className="container">
-        
+       
           <Modal
             visible={this.state.visible}
             width="600"
