@@ -1,10 +1,8 @@
 package com.example.estaterent.model;
 
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
 import javax.persistence.*;
 
 @Entity
