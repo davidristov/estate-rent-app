@@ -12,7 +12,7 @@ class Popup extends React.Component {
     availableFromDate: new Date(),
     owner: "",
     phoneNumber: "",
-    property: { id: 1, name: "" },
+    property: { id: 1, name: "Apartman" },
   };
 
   constructor(props) {
@@ -27,6 +27,8 @@ class Popup extends React.Component {
     this.submitRecord = this.submitRecord.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleProperty = this.handleProperty.bind(this);
+    this.change = this.change.bind(this);
   }
 
   async remove(id) {
@@ -65,6 +67,17 @@ class Popup extends React.Component {
     console.log(item);
   }
 
+  handleProperty(event) {
+    const target = event.target;
+    const targetName = target.name;
+    const name = target.value;
+    const id = event.target.selectedOptions[0].id;
+    let item = { ...this.state.item };
+    item[targetName] = { id: id, name };
+    console.log(item);
+    this.setState({ item });
+  }
+
   async submitRecord(event) {
     const item = this.state.item;
 
@@ -83,6 +96,10 @@ class Popup extends React.Component {
     console.log(this.state);
   }
 
+  change(event) {
+    console.log(event.target);
+  }
+
   async componentDidMount() {
     const response = await fetch("/api/properties");
     const body = await response.json();
@@ -97,7 +114,9 @@ class Popup extends React.Component {
     const { properties } = this.state;
 
     let propertiesList = properties.map((property) => (
-      <option key={property.id}>{property.name}</option>
+      <option id={property.id} key={property.id}>
+        {property.name}
+      </option>
     ));
 
     return (
@@ -117,7 +136,7 @@ class Popup extends React.Component {
           </FormGroup>
           <FormGroup>
             <Label for="property">Property</Label>
-            <select name="property" onChange={this.handleChange}>
+            <select name="property" onChange={this.handleProperty}>
               {propertiesList}
             </select>
           </FormGroup>

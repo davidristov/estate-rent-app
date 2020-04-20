@@ -17,7 +17,6 @@ class Records extends Component {
       isLoading: false,
       properties: [],
       records: [],
-      item: this.emptyItem,
       showPopup: false,
       visible: false,
     };
