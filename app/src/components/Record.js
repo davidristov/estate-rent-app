@@ -141,13 +141,7 @@ class Records extends Component {
       <div>
         <AppNav />
         <Container className="container">
-          <Button
-            className="buttonAdd"
-            color="primary"
-            onClick={() => this.openModal()}
-          >
-            Add
-          </Button>
+        
           <Modal
             visible={this.state.visible}
             width="600"
@@ -159,6 +153,13 @@ class Records extends Component {
           </Modal>
 
           <MDBDataTable className="table" responsive striped hover data={data} />
+          <Button
+            className="buttonAdd"
+            color="primary"
+            onClick={() => this.openModal()}
+          >
+            Add
+          </Button>
         </Container>
       </div>
     );
