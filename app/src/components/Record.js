@@ -117,7 +117,7 @@ class Records extends Component {
       rows: [
         ...this.state.records.map((record) => ({
           description: record.description,
-          location: <a href={`https://maps.google.com/?q=${record.location}`}>{record.location}</a>,
+          location: <a className="locationLink" href={`https://maps.google.com/?q=${record.location}`}>{record.location}</a>,
           avDate: (
             <Moment
               date={record.availableFromDate}
@@ -148,7 +148,7 @@ class Records extends Component {
           <Modal
             visible={this.state.visible}
             width="600"
-            height="630"
+            height="600"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
