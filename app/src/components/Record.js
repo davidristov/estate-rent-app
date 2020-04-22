@@ -148,7 +148,7 @@ class Records extends Component {
           <Modal
             visible={this.state.visible}
             width="600"
-            height="600"
+            height="640"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
