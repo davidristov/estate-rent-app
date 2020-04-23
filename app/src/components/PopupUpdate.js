@@ -5,18 +5,7 @@ import Calendar from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../style/Popup.css";
 
-class Popup extends React.Component {
-  emptyItem = {
-    id: "",
-    description: "",
-    location: "",
-    availableFromDate: new Date(),
-    owner: "",
-    phoneNumber: "",
-    price: "",
-    property: { id: 1, name: "Apartman" },
-  };
-
+class PopupUpdate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -26,11 +15,22 @@ class Popup extends React.Component {
       item: this.emptyItem,
     };
 
-    this.submitRecord = this.submitRecord.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleProperty = this.handleProperty.bind(this);
+    this.updateRecord = this.updateRecord.bind(this);
   }
+
+  emptyItem = {
+    id: this.props.id,
+    description: this.props.description,
+    location: this.props.location,
+    availableFromDate: new Date(this.props.date),
+    owner: this.props.owner,
+    phoneNumber: this.props.phoneNumber,
+    price: this.props.price,
+    property: { id: this.props.propertyId, name: this.props.propertyName },
+  };
 
   togglePopup() {
     this.setState({
@@ -49,7 +49,7 @@ class Popup extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    let item = { ...this.state.item };
+    let item = this.emptyItem;
     item[name] = value;
     this.setState({ item });
     console.log(item);
@@ -65,25 +65,6 @@ class Popup extends React.Component {
     console.log(item);
     this.setState({ item });
   }
-
-  async submitRecord(event) {
-    const item = this.state.item;
-
-    await fetch(`/api/records`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(item),
-    });
-
-    event.preventDefault();
-    this.props.history.push("/records");
-
-    console.log(this.state);
-  }
-
   async componentDidMount() {
     const response = await fetch("/api/properties");
     const body = await response.json();
@@ -92,6 +73,19 @@ class Popup extends React.Component {
     const recordResponse = await fetch("/api/records");
     const bodyRecord = await recordResponse.json();
     this.setState({ records: bodyRecord, isLoading: false });
+  }
+
+  async updateRecord() {
+    const item = this.state.item;
+
+    await fetch(`/api/records/${item.id}`, {
+      method: "PUT",
+      body: JSON.stringify(item),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
   }
 
   render() {
@@ -105,7 +99,7 @@ class Popup extends React.Component {
 
     return (
       <Container>
-        <Form onSubmit={this.submitRecord} className="form">
+        <Form onSubmit={this.updateRecord} className="form">
           <FormGroup>
             <Label for="description">Description</Label>
             <Input
@@ -114,6 +108,7 @@ class Popup extends React.Component {
               id="description"
               onChange={this.handleChange}
               autoComplete="name"
+              defaultValue={this.props.description}
               required
             />
           </FormGroup>
@@ -124,6 +119,7 @@ class Popup extends React.Component {
               className="property"
               onChange={this.handleProperty}
             >
+              <option disabled hidden selected >Choose property</option>
               {propertiesList}
             </select>
           </FormGroup>
@@ -144,6 +140,7 @@ class Popup extends React.Component {
               id="location"
               onChange={this.handleChange}
               required
+              defaultValue={this.props.location}
             />
           </FormGroup>
           <FormGroup className="price">
@@ -154,6 +151,7 @@ class Popup extends React.Component {
               id="price"
               onChange={this.handleChange}
               required
+              defaultValue={this.props.price}
             />
           </FormGroup>
           <FormGroup>
@@ -164,6 +162,7 @@ class Popup extends React.Component {
               id="owner"
               onChange={this.handleChange}
               required
+              defaultValue={this.props.owner}
             />
           </FormGroup>
           <FormGroup>
@@ -174,15 +173,14 @@ class Popup extends React.Component {
               id="phone"
               onChange={this.handleChange}
               required
+              defaultValue={this.props.phoneNumber}
             />
           </FormGroup>
-          <Button color="primary" type="submit">
-            Save
-          </Button>{" "}
+          <Button color="primary">Save</Button>{" "}
         </Form>
       </Container>
     );
   }
 }
 
-export default Popup;
+export default PopupUpdate;
