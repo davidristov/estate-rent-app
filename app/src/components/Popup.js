@@ -32,12 +32,6 @@ class Popup extends React.Component {
     this.handleProperty = this.handleProperty.bind(this);
   }
 
-  togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup,
-    });
-  }
-
   handleDateChange(dateChanged) {
     let item = { ...this.state.item };
     item.availableFromDate = dateChanged;

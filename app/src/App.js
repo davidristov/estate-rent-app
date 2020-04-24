@@ -5,6 +5,7 @@ import Records from "./components/Record";
 import { AuthProvider } from "./components/firebase-auth/Auth";
 import PrivateRoute from "./components/firebase-auth/PrivateRoute";
 import Login from "./components/firebase-auth/Login";
+import Employees from './components/Employees'
 
 class App extends Component {
   state = {};
@@ -16,6 +17,7 @@ class App extends Component {
             <PrivateRoute exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/records" component={Records} />
+            <PrivateRoute exact path="/employees" component={Employees} />
           </Switch>
         </Router>
       </AuthProvider>

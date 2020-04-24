@@ -187,6 +187,7 @@ class Records extends Component {
           location: (
             <a
               className="locationLink"
+              name={record.location}
               href={`https://maps.google.com/?q=${record.location}`}
             >
               {record.location}
