@@ -24,23 +24,11 @@ public class Record {
     private String phoneNumber;
     private String price;
 
-    @JsonIgnore
-    @ManyToOne
-    private User user;
-
     @ManyToOne
     private Property property;
 
     public Long getId() {
         return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Property getProperty() {
