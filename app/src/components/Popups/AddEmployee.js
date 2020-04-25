@@ -8,21 +8,25 @@ class AddEmployee extends Component {
 
     this.state = {
       item: this.emptyItem,
-      departments: []
+      departments: [],
+      offices: [],
     };
 
     this.submitEmployee = this.submitEmployee.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.handleOfficeCity = this.handleOfficeCity.bind(this);
-    this.handleOfficeAddress = this.handleOfficeAddress.bind(this);
     this.handleDepartment = this.handleDepartment.bind(this);
+    this.handleOffice = this.handleOffice.bind(this);
   }
 
   async componentDidMount() {
     const response = await fetch("/api/departments");
     const body = await response.json();
     this.setState({ departments: body, isLoading: false });
+
+    const responseOffice = await fetch("/api/offices");
+    const bodyOffice = await responseOffice.json();
+    this.setState({ offices: bodyOffice });
   }
 
   emptyItem = {
@@ -33,7 +37,7 @@ class AddEmployee extends Component {
     residenceAddress: "",
     embg: "",
     phoneNumber: "",
-    office: { id: "", city: "", address: "" },
+    office: { id: 1, city: "", address: "" },
     department: { id: 1, name: "" },
   };
 
@@ -44,36 +48,15 @@ class AddEmployee extends Component {
     console.log(item);
   }
 
-  handleOfficeCity(event) {
-    const target = event.target;
-    let item = { ...this.state.item };
-    const value = target.value;
-
-    item.office.city = value;
-    this.setState({ item });
-    console.log(item);
-  }
-
-  handleOfficeAddress(event) {
-    const target = event.target;
-    let item = { ...this.state.item };
-    const value = target.value;
-
-    item.office.address = value;
-    this.setState({ item });
-    console.log(item);
-  }
-
   handleDepartment(event) {
     const target = event.target;
     let item = { ...this.state.item };
     const value = target.value;
     const id = event.target.selectedOptions[0].id;
-    item.id = id;
+    item.department.id = id;
     item.department.name = value;
     this.setState({ item });
     console.log(item);
-
   }
 
   handleChange(event) {
@@ -82,6 +65,16 @@ class AddEmployee extends Component {
     const name = target.name;
     let item = { ...this.state.item };
     item[name] = value;
+    this.setState({ item });
+    console.log(item);
+  }
+
+  handleOffice(event) {
+    const target = event.target;
+    let item = { ...this.state.item };
+    const value = target.value;
+    const id = event.target.selectedOptions[0].id;
+    item.office.id = id;
     this.setState({ item });
     console.log(item);
   }
@@ -105,14 +98,20 @@ class AddEmployee extends Component {
   }
 
   render() {
-
     const { departments } = this.state;
+    const { offices } = this.state;
+
+    let officeList = offices.map((office) => (
+      <option id={office.id} key={office.id}>
+        {`${office.city} ${office.address}`}
+      </option>
+    ));
 
     let departmentList = departments.map((department) => (
-        <option id={department.id} key={department.id}>
-          {department.name}
-        </option>
-      ));
+      <option id={department.id} key={department.id}>
+        {department.name}
+      </option>
+    ));
 
     return (
       <div>
@@ -138,7 +137,7 @@ class AddEmployee extends Component {
                 required
               />
             </FormGroup>
-            {/* <FormGroup>
+            <FormGroup>
               <Label for="date">Date of employment</Label>
               <Calendar
                 className="calendar"
@@ -146,7 +145,7 @@ class AddEmployee extends Component {
                 onChange={this.handleDateChange}
                 dateFormat="d MMMM, yyyy"
               />
-            </FormGroup> */}
+            </FormGroup>
             <FormGroup>
               <Label for="residenceAddress">Residence address</Label>
               <Input
@@ -178,35 +177,25 @@ class AddEmployee extends Component {
               />
             </FormGroup>
             <FormGroup>
-              <Label for="Office City">Office City</Label>
-              <Input
-                type="text"
+              <Label for="office">Offices</Label>
+              <select
                 name="office"
-                id="officeCity"
-                onChange={this.handleOfficeCity}
-                required
-              />
+                className="office"
+                onChange={this.handleOffice}
+              >
+                {officeList}
+              </select>
             </FormGroup>
             <FormGroup>
-              <Label for="Office Address">Office Address</Label>
-              <Input
-                type="text"
-                name="office"
-                id="phone"
-                onChange={this.handleOfficeAddress}
-                required
-              />
+              <Label for="department">Department</Label>
+              <select
+                name="department"
+                className="department"
+                onChange={this.handleDepartment}
+              >
+                {departmentList}
+              </select>
             </FormGroup>
-            <FormGroup>
-            <Label for="department">Department</Label>
-            <select
-              name="department"
-              className="department"
-              onChange={this.handleDepartment}
-            >
-              {departmentList}
-            </select>
-          </FormGroup>
             <Button color="primary" type="submit">
               Save
             </Button>{" "}

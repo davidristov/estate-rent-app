@@ -12,6 +12,10 @@ import "mdbreact/dist/css/mdb.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
 import PopupUpdate from "./PopupUpdate";
+import { Pie, Bar, Line } from "react-chartjs-2";
+import colors from "nice-color-palettes";
+import LocationChart from './charts/LocationChart'
+import PropertyChart from './charts/PropertyChart'
 
 class Records extends Component {
   constructor(props) {
@@ -25,6 +29,9 @@ class Records extends Component {
       visible: false,
       visibleEdit: false,
       showComponent: false,
+      propertiesLabels: [],
+      propertiesValues: [],
+      propertiesUniqueLabels: [],
     };
   }
 
@@ -96,6 +103,42 @@ class Records extends Component {
     const recordResponse = await fetch("/api/records");
     const bodyRecord = await recordResponse.json();
     this.setState({ records: bodyRecord, isLoading: false });
+
+    let len = Object.keys(bodyRecord).length;
+
+
+    // for pie chart
+
+    for (let i = 0; i < len; i++) {
+      this.setState({
+        propertiesLabels: this.state.propertiesLabels.concat(
+          bodyRecord[i].property.name
+        ),
+      });
+    }
+
+    let countsPie = {};
+
+    this.state.propertiesLabels.forEach(function (x) {
+      countsPie[x] = (countsPie[x] || 0) + 1;
+    });
+
+    let propertiesUniqueLabels = Array.from(
+      new Set(this.state.propertiesLabels)
+    );
+    this.setState({
+      propertiesUniqueLabels: propertiesUniqueLabels,
+    });
+
+    let lenCountsPie = Object.keys(countsPie).length;
+
+    for (let i = 0; i < lenCountsPie; i++) {
+      this.setState({
+        propertiesValues: this.state.propertiesValues.concat(
+          countsPie[Object.keys(countsPie)[i]]
+        ),
+      });
+    }
   }
 
   async updateRecord(data) {
@@ -127,8 +170,20 @@ class Records extends Component {
 
   render() {
     const { isLoading } = this.state;
-
     if (isLoading) return <div>Loading...</div>;
+
+    let PieChartData = {
+      labels: this.state.propertiesUniqueLabels,
+
+      datasets: [
+        {
+          data: this.state.propertiesValues,
+          backgroundColor: colors[8],
+          borderColor: "rgb(0,0,0)",
+          borderWidth: 1,
+        },
+      ],
+    };
 
     let data = {
       columns: [
@@ -206,7 +261,7 @@ class Records extends Component {
           update: (
             <Button
               size="sm"
-              color="info"
+              color="primary"
               onClick={() =>
                 this.Update(
                   record.id,
@@ -283,6 +338,10 @@ class Records extends Component {
               />
             ) : null}
           </Modal>
+      
+        
+          <LocationChart/>
+          <PropertyChart/>
         </Container>
       </div>
     );

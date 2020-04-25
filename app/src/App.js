@@ -11,16 +11,16 @@ class App extends Component {
   state = {};
   render() {
     return (
-      <AuthProvider>
+    
         <Router>
           <Switch>
-            <PrivateRoute exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/records" component={Records} />
-            <PrivateRoute exact path="/employees" component={Employees} />
+            <Route exact path="/" component={Home} />
+            {/* <Route exact path="/login" component={Login} /> */}
+            <Route exact path="/records" component={Records} />
+            <Route exact path="/employees" component={Employees} />
           </Switch>
         </Router>
-      </AuthProvider>
+   
     );
   }
 }

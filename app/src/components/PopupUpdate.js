@@ -32,12 +32,6 @@ class PopupUpdate extends React.Component {
     property: { id: this.props.propertyId, name: this.props.propertyName },
   };
 
-  togglePopup() {
-    this.setState({
-      showPopup: !this.state.showPopup,
-    });
-  }
-
   handleDateChange(dateChanged) {
     let item = { ...this.state.item };
     item.availableFromDate = dateChanged;
@@ -92,7 +86,7 @@ class PopupUpdate extends React.Component {
     const { properties } = this.state;
 
     let propertiesList = properties.map((property) => (
-      <option id={property.id} key={property.id}>
+      <option id={property.id} key={property.id} value={property.id}>
         {property.name}
       </option>
     ));
@@ -118,8 +112,8 @@ class PopupUpdate extends React.Component {
               name="property"
               className="property"
               onChange={this.handleProperty}
+              value={this.props.propertyId}
             >
-              <option disabled hidden selected >Choose property</option>
               {propertiesList}
             </select>
           </FormGroup>

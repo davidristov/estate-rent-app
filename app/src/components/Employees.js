@@ -6,6 +6,7 @@ import { Container, Button } from "reactstrap";
 import "../style/Employee.css";
 import Modal from "react-awesome-modal";
 import AddEmployee from './Popups/AddEmployee'
+import EmployeeDetails from './Popups/EmployeeDetails'
 
 class Employees extends Component {
   constructor(props) {
@@ -14,7 +15,35 @@ class Employees extends Component {
     this.state = {
       employees: [],
       visible: false,
+      showComponent: false,
+      visibleDetails: false
     };
+  }
+
+  id = ""
+  name = ""
+  surname = ""
+  dateOfEmployment = ""
+  residenceAddress = ""
+  embg = ""
+  phoneNumber = ""
+  officeId = ""
+  officeAddress = ""
+  officeCity = ""
+  departmentId = ""
+  departmentName = ""
+
+  openDetailsModal() {
+    this.setState({
+      visibleDetails: true,
+    });
+  }
+
+  closeDetailsModal() {
+    this.setState({
+      visibleDetails: false,
+      showComponent: false,
+    });
   }
 
   openModal() {
@@ -60,10 +89,25 @@ class Employees extends Component {
     residence,
     idNumber,
     contact,
-    city,
-    address,
-    department
-  ) {}
+    office,
+    department,
+  ) {
+    this.id = id
+    this.name = name
+    this.surname = surname
+    this.dateOfEmployment = date
+    this.residenceAddress = residence
+    this.embg = idNumber
+    this.phoneNumber = contact
+    this.officeId = office.id
+    this.officeCity = office.city
+    this.officeAddress = office.address
+    this.departmentId = department.id
+    this.departmentName = department.name
+
+    this.setState({ visibleDetails: true });
+    this.setState({ showComponent: true });
+  }
 
   async removeEmployee(id) {
     await fetch(`/api/employees/${id}`, {
@@ -136,7 +180,7 @@ class Employees extends Component {
           details: (
             <Button
               size="sm"
-              color="warning"
+              color="primary"
               onClick={() =>
                 this.detailsEmployee(
                   employee.id,
@@ -146,9 +190,8 @@ class Employees extends Component {
                   employee.residenceAddress,
                   employee.embg,
                   employee.phoneNumber,
-                  employee.office.city,
-                  employee.office.name,
-                  employee.department.name
+                  employee.office,
+                  employee.department
                 )
               }
             >
@@ -179,7 +222,7 @@ class Employees extends Component {
           <Modal
             visible={this.state.visible}
             width="600"
-            height="820"
+            height="700"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
@@ -195,6 +238,32 @@ class Employees extends Component {
           >
             Add Employee
           </Button>
+
+          <Modal
+            visible={this.state.visibleDetails}
+            width="600"
+            height="680"
+            effect="fadeInUp"
+            onClickAway={() => this.closeDetailsModal()}
+          >
+            {this.state.showComponent ? (
+              <EmployeeDetails
+                id = {this.id}
+                name = {this.name}
+                surname = {this.surname}
+                dateOfEmployment = {this.dateOfEmployment}
+                residenceAddress = {this.residenceAddress}
+                embg = {this.embg}
+                phoneNumber = {this.phoneNumber}
+                officeId = {this.officeId}
+                officeAddress = {this.officeAddress}
+                officeCity = {this.officeCity}
+                departmentId = {this.departmentId}
+                departmentName = {this.departmentName}
+              />
+            ) : null}
+          </Modal>
+
         </Container>
       </div>
     );
