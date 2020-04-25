@@ -45,4 +45,10 @@ public class EmployeeController {
         return ResponseEntity.created(new URI("/api/employees" + result.getId())).body(result);
     }
 
+    @PutMapping("/employees/{id}")
+    ResponseEntity<Employee> updateEmployee(@Valid @RequestBody Employee employee){
+        Employee result = employeeRepository.save(employee);
+        return ResponseEntity.ok().body(result);
+    }
+
 }
