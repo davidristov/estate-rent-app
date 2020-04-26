@@ -2,6 +2,7 @@ package com.example.estaterent.controller;
 
 import com.example.estaterent.model.Record;
 import com.example.estaterent.repository.RecordRepository;
+import com.example.estaterent.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,37 +18,35 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class RecordController {
 
-    @Autowired
-    private RecordRepository recordRepository;
+    private RecordService recordService;
+
+    public RecordController(RecordService recordService) {
+        this.recordService = recordService;
+    }
 
     @GetMapping("/records")
     List<Record> getRecords(){
-        return recordRepository.findAll();
+        return this.recordService.getRecords();
     }
 
     @DeleteMapping("/records/{id}")
     ResponseEntity<?> deleteRecord(@PathVariable Long id){
-        recordRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+        return this.recordService.deleteRecord(id);
     }
 
     @GetMapping("/records/{id}")
     ResponseEntity<?> getRecord(@PathVariable Long id){
-        Optional<Record> record = recordRepository.findById(id);
-        return record.map(response -> ResponseEntity.ok().body(response))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return this.recordService.getRecord(id);
     }
 
     @PostMapping("/records")
     ResponseEntity<Record> createRecord(@Valid @RequestBody Record record) throws URISyntaxException {
-        Record result = recordRepository.save(record);
-        return ResponseEntity.created(new URI("/api/records" + result.getId())).body(result);
+        return this.recordService.createRecord(record);
     }
 
     @PutMapping("/records/{id}")
     ResponseEntity<Record> updateRecord(@Valid @RequestBody Record record){
-        Record result = recordRepository.save(record);
-        return ResponseEntity.ok().body(result);
+        return this.recordService.updateRecord(record);
     }
 
 }

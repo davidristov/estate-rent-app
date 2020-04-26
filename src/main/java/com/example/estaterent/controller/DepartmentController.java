@@ -1,8 +1,7 @@
 package com.example.estaterent.controller;
 
 import com.example.estaterent.model.Department;
-import com.example.estaterent.repository.DepartmentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.estaterent.service.DepartmentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,12 +12,15 @@ import java.util.List;
 @RequestMapping("/api")
 public class DepartmentController {
 
-    @Autowired
-    private DepartmentRepository departmentRepository;
+    private DepartmentService departmentService;
+
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     @GetMapping("/departments")
     List<Department> getDepartments(){
-        return departmentRepository.findAll();
+        return departmentService.getDepartments();
     }
 
 }
