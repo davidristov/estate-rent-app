@@ -59,7 +59,7 @@ class SquaresChart extends Component {
 
   render() {
     let chartData = {
-      labels: ["0-20", "21-40", "41-60", "61-80", "81-100", "101+"],
+      labels: ["0-20m²", "21-40m²", "41-60m²", "61-80m²", "81-100m²", "101m²+"],
 
       datasets: [
         {

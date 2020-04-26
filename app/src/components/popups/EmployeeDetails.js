@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Input, Container, Button, Label, FormGroup, Form } from "reactstrap";
 import Calendar from "react-datepicker";
+import '../../style/popups/EmployeeDetails.css'
 
 class EmployeeDetails extends Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class EmployeeDetails extends Component {
       item: this.emptyItem,
       offices: [],
       departments: [],
-      selectedValue: this.props.officeId
+      selectedAddressValue: this.props.officeId,
+      selectedDepartmentValue: this.props.departmentId
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,7 +47,7 @@ class EmployeeDetails extends Component {
     let item = { ...this.state.item };
     item[targetName] = { id: id, name };
     console.log(item);
-    this.setState({selectedValue: name})
+    this.setState({selectedAddressValue: name})
     this.setState({ item });
   }
 
@@ -59,6 +61,7 @@ class EmployeeDetails extends Component {
     item[targetName] = { id: id, name };
     console.log(item);
     this.setState({ item });
+    this.setState({selectedDepartmentValue: name})
   }
 
   async componentDidMount() {
@@ -198,13 +201,13 @@ class EmployeeDetails extends Component {
               {officeList}
             </select>
           </FormGroup>
-          <FormGroup>
+          <FormGroup> 
             <Label for="department">Department</Label>
             <select
               name="department"
               className="department"
               onChange={this.handleDepartment}
-              value={this.props.departmentId}
+              value={this.state.selectedDepartmentValue}
             >
               {departmentList}
             </select>

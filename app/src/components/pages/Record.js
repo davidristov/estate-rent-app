@@ -138,6 +138,7 @@ class Records extends Component {
           label: "Description",
           field: "description",
           sort: "asc",
+          width: 100
         },
 
         {
