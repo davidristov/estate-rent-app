@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { MDBDataTable } from "mdbreact";
 import Moment from "react-moment";
-import AppNav from "./AppNav";
+import AppNav from "../layout/AppNav";
 import { Container, Button } from "reactstrap";
-import "../style/Employee.css";
+import "../../style/pages/Employee.css";
 import Modal from "react-awesome-modal";
-import AddEmployee from './Popups/AddEmployee'
-import EmployeeDetails from './Popups/EmployeeDetails'
+import AddEmployee from '../popups/AddEmployee'
+import EmployeeDetails from '../popups/EmployeeDetails'
 
 class Employees extends Component {
   constructor(props) {

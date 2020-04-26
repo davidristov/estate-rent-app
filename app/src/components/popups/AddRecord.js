@@ -1,9 +1,9 @@
 import React from "react";
 import { Input, Container, Button, Label, FormGroup, Form } from "reactstrap";
-import "../App.css";
+import "../../App.css";
 import Calendar from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "../style/Popup.css";
+import "../../style/RecordPopup.css";
 
 class Popup extends React.Component {
   emptyItem = {
@@ -14,6 +14,7 @@ class Popup extends React.Component {
     owner: "",
     phoneNumber: "",
     price: "",
+    squareFoot: "",
     property: { id: 1, name: "Apartman" },
   };
 
@@ -146,6 +147,16 @@ class Popup extends React.Component {
               type="text"
               name="price"
               id="price"
+              onChange={this.handleChange}
+              required
+            />
+          </FormGroup>
+          <FormGroup className="squareFoot">
+            <Label for="price">m2</Label>
+            <Input
+              type="number"
+              name="squareFoot"
+              id="squareFoot"
               onChange={this.handleChange}
               required
             />

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import AppNav from "./AppNav";
-import app from "./firebase-auth/base";
+import AppNav from "../layout/AppNav";
 import { Button, Container } from "reactstrap";
 
 class Home extends Component {
@@ -9,8 +8,9 @@ class Home extends Component {
     return (
       <div>
         <AppNav />
-        <Container><Button color="primary" onClick={() => app.auth().signOut()}>Sign out</Button></Container>
-        
+        <Container>
+          <Button color="primary">Sign out</Button>
+        </Container>
       </div>
     );
   }

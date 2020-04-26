@@ -10,6 +10,7 @@ class EmployeeDetails extends Component {
       item: this.emptyItem,
       offices: [],
       departments: [],
+      selectedValue: this.props.officeId
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -44,6 +45,7 @@ class EmployeeDetails extends Component {
     let item = { ...this.state.item };
     item[targetName] = { id: id, name };
     console.log(item);
+    this.setState({selectedValue: name})
     this.setState({ item });
   }
 
@@ -191,7 +193,7 @@ class EmployeeDetails extends Component {
               name="office"
               className="office"
               onChange={this.handleOffice}
-              value={this.props.officeId}
+              value={this.state.selectedValue}
             >
               {officeList}
             </select>

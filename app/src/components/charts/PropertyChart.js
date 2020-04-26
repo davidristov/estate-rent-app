@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Pie } from "react-chartjs-2";
 import colors from "nice-color-palettes";
+import '../../style/charts/PropertyChart.css'
 
 class PropertyChart extends Component {
   state = {
@@ -61,7 +62,7 @@ class PropertyChart extends Component {
       datasets: [
         {
           data: this.state.propertiesValues,
-          backgroundColor: colors[8],
+          backgroundColor: colors[2],
           borderColor: "rgb(0,0,0)",
           borderWidth: 1,
         },
@@ -69,11 +70,14 @@ class PropertyChart extends Component {
     };
 
     return (
-      <div className="chart2">
+      <div className="pieChart">
         <Pie
           widht="300px"
           data={PieChartData}
           options={{
+            
+            responsive: true,
+            maintainAspectRatio: true,
             scales: {
               yAxes: [
                 {

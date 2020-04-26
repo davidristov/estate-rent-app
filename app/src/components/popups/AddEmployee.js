@@ -70,9 +70,9 @@ class AddEmployee extends Component {
   }
 
   handleOffice(event) {
-    const target = event.target;
+    // const target = event.target;
     let item = { ...this.state.item };
-    const value = target.value;
+    // const value = target.value;
     const id = event.target.selectedOptions[0].id;
     item.office.id = id;
     this.setState({ item });

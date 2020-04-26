@@ -1,9 +1,9 @@
 import React from "react";
 import { Input, Container, Button, Label, FormGroup, Form } from "reactstrap";
-import "../App.css";
+import "../../App.css";
 import Calendar from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "../style/Popup.css";
+import "../../style/RecordPopup.css";
 
 class PopupUpdate extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class PopupUpdate extends React.Component {
       properties: [],
       records: [],
       item: this.emptyItem,
+      selectedValue: this.props.propertyId
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,6 +30,7 @@ class PopupUpdate extends React.Component {
     owner: this.props.owner,
     phoneNumber: this.props.phoneNumber,
     price: this.props.price,
+    squareFoot: this.props.squareFoot,
     property: { id: this.props.propertyId, name: this.props.propertyName },
   };
 
@@ -56,6 +58,9 @@ class PopupUpdate extends React.Component {
     const id = event.target.selectedOptions[0].id;
     let item = { ...this.state.item };
     item[targetName] = { id: id, name };
+
+    this.setState({selectedValue: name})
+
     console.log(item);
     this.setState({ item });
   }
@@ -112,7 +117,7 @@ class PopupUpdate extends React.Component {
               name="property"
               className="property"
               onChange={this.handleProperty}
-              value={this.props.propertyId}
+              value={this.state.selectedValue}
             >
               {propertiesList}
             </select>
@@ -146,6 +151,17 @@ class PopupUpdate extends React.Component {
               onChange={this.handleChange}
               required
               defaultValue={this.props.price}
+            />
+          </FormGroup>
+          <FormGroup className="squareFoot">
+            <Label for="squareFoot">Square Footage</Label>
+            <Input
+              type="text"
+              name="squareFoot"
+              id="squareFoot"
+              onChange={this.handleChange}
+              required
+              defaultValue={this.props.squareFoot}
             />
           </FormGroup>
           <FormGroup>

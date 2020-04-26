@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {  Bar  } from "react-chartjs-2";
 import colors from "nice-color-palettes";
+import '../../style/charts/LocationChart.css'
 
 class LocationChart extends Component {
   state = {
@@ -85,10 +86,11 @@ class LocationChart extends Component {
     };
 
     return (
-      <div className="chart">
+      <div className="BarChart">
         <Bar
           data={BarChartData}
           options={{
+            responsive: true,
             legend: {
               display: false,
             },

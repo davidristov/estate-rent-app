@@ -34,7 +34,11 @@ class AppNav extends Component {
                   Employees
                 </Link>
               </li>
-
+              <li className="nav-item">
+                <Link className="nav-link" to="/statistics">
+                  Statistics
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

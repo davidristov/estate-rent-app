@@ -1,21 +1,17 @@
 import React, { Component } from "react";
-import AppNav from "./AppNav";
+import AppNav from "../layout/AppNav";
 import { Container, Button } from "reactstrap";
-import "../App.css";
+import "../../App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Moment from "react-moment";
-import "../style/Record.css";
-import Popup from "./Popup";
+import "../../style/pages/Record.css";
+import AddRecord from "../popups/AddRecord";
 import Modal from "react-awesome-modal";
 import { MDBDataTable } from "mdbreact";
 import "mdbreact/dist/css/mdb.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "bootstrap-css-only/css/bootstrap.min.css";
-import PopupUpdate from "./PopupUpdate";
-import { Pie, Bar, Line } from "react-chartjs-2";
-import colors from "nice-color-palettes";
-import LocationChart from './charts/LocationChart'
-import PropertyChart from './charts/PropertyChart'
+import RecordDetails from "../popups/RecordDetails";
 
 class Records extends Component {
   constructor(props) {
@@ -29,9 +25,6 @@ class Records extends Component {
       visible: false,
       visibleEdit: false,
       showComponent: false,
-      propertiesLabels: [],
-      propertiesValues: [],
-      propertiesUniqueLabels: [],
     };
   }
 
@@ -45,6 +38,7 @@ class Records extends Component {
   desc = "";
   propertyId = "";
   propertyName = "";
+  squareFoot = "";
 
   emptyItem = {
     id: "",
@@ -54,6 +48,7 @@ class Records extends Component {
     owner: "",
     phoneNumber: "",
     price: "",
+    squareFoot: "",
     property: { id: 1, name: "Apartman" },
   };
 
@@ -103,42 +98,6 @@ class Records extends Component {
     const recordResponse = await fetch("/api/records");
     const bodyRecord = await recordResponse.json();
     this.setState({ records: bodyRecord, isLoading: false });
-
-    let len = Object.keys(bodyRecord).length;
-
-
-    // for pie chart
-
-    for (let i = 0; i < len; i++) {
-      this.setState({
-        propertiesLabels: this.state.propertiesLabels.concat(
-          bodyRecord[i].property.name
-        ),
-      });
-    }
-
-    let countsPie = {};
-
-    this.state.propertiesLabels.forEach(function (x) {
-      countsPie[x] = (countsPie[x] || 0) + 1;
-    });
-
-    let propertiesUniqueLabels = Array.from(
-      new Set(this.state.propertiesLabels)
-    );
-    this.setState({
-      propertiesUniqueLabels: propertiesUniqueLabels,
-    });
-
-    let lenCountsPie = Object.keys(countsPie).length;
-
-    for (let i = 0; i < lenCountsPie; i++) {
-      this.setState({
-        propertiesValues: this.state.propertiesValues.concat(
-          countsPie[Object.keys(countsPie)[i]]
-        ),
-      });
-    }
   }
 
   async updateRecord(data) {
@@ -152,7 +111,7 @@ class Records extends Component {
     });
   }
 
-  Update(id, description, location, date, property, price, owner, contact) {
+  Update(id, description, location, date, property, price, owner, contact, sqFoot) {
     this.id = id;
     this.location = location;
     this.date = date;
@@ -163,6 +122,7 @@ class Records extends Component {
     this.desc = description;
     this.propertyId = property.id;
     this.propertyName = property.name;
+    this.squareFoot = sqFoot;
 
     this.setState({ visibleEdit: true });
     this.setState({ showComponent: true });
@@ -171,19 +131,6 @@ class Records extends Component {
   render() {
     const { isLoading } = this.state;
     if (isLoading) return <div>Loading...</div>;
-
-    let PieChartData = {
-      labels: this.state.propertiesUniqueLabels,
-
-      datasets: [
-        {
-          data: this.state.propertiesValues,
-          backgroundColor: colors[8],
-          borderColor: "rgb(0,0,0)",
-          borderWidth: 1,
-        },
-      ],
-    };
 
     let data = {
       columns: [
@@ -214,13 +161,8 @@ class Records extends Component {
         },
 
         {
-          label: "Owner",
-          field: "owner",
-        },
-
-        {
-          label: "Contact",
-          field: "contact",
+          label: "m2",
+          field: "squareFoot",
         },
 
         {
@@ -256,8 +198,7 @@ class Records extends Component {
           ),
           property: record.property.name,
           price: record.price,
-          owner: record.owner,
-          contact: record.phoneNumber,
+          squareFoot: record.squareFoot,
           update: (
             <Button
               size="sm"
@@ -271,11 +212,12 @@ class Records extends Component {
                   record.property,
                   record.price,
                   record.owner,
-                  record.phoneNumber
+                  record.phoneNumber,
+                  record.squareFoot
                 )
               }
             >
-              Update
+              Details
             </Button>
           ),
           delete: (
@@ -302,11 +244,11 @@ class Records extends Component {
           <Modal
             visible={this.state.visible}
             width="600"
-            height="640"
+            height="740"
             effect="fadeInUp"
             onClickAway={() => this.closeModal()}
           >
-            <Popup />
+            <AddRecord />
           </Modal>
 
           <MDBDataTable className="table" responsive data={data} />
@@ -320,12 +262,12 @@ class Records extends Component {
           <Modal
             visible={this.state.visibleEdit}
             width="600"
-            height="640"
+            height="720"
             effect="fadeInUp"
             onClickAway={() => this.closeEditModal()}
           >
             {this.state.showComponent ? (
-              <PopupUpdate
+              <RecordDetails
                 id={this.id}
                 description={this.desc}
                 location={this.location}
@@ -335,13 +277,10 @@ class Records extends Component {
                 price={this.price}
                 owner={this.owner}
                 phoneNumber={this.phoneNumber}
+                squareFoot={this.squareFoot}
               />
             ) : null}
           </Modal>
-      
-        
-          <LocationChart/>
-          <PropertyChart/>
         </Container>
       </div>
     );
