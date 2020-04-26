@@ -23,6 +23,7 @@ public class Record {
     private String owner;
     private String phoneNumber;
     private String price;
+    private int squareFoot;
 
     @ManyToOne
     private Property property;
