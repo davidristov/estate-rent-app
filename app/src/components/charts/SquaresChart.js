@@ -71,7 +71,7 @@ class SquaresChart extends Component {
             this.state.eightyOneHundred,
             this.state.hundredPlus,
           ],
-          backgroundColor: colors[8],
+          backgroundColor: colors[8].concat(colors[9]),
           borderColor: "rgb(0,0,0)",
           borderWidth: 1,
         },
@@ -90,7 +90,9 @@ class SquaresChart extends Component {
             scales: {
               yAxes: [
                 {
-                //   display: false,
+                  ticks: {
+                    beginAtZero: true,
+                  },
                 },
               ],
             },
