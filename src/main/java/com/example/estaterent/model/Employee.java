@@ -27,7 +27,6 @@ public class Employee{
     @ManyToOne
     private Department department;
 
-
     public Long getId() {
         return id;
     }
